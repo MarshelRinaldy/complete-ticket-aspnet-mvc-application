@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/eTickets.V8.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
 </head>
 <body>
     <header>
@@ -22,10 +24,23 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear"></i> Management
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Actors" asp-action="Index">Actors</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Producers" asp-action="Index">Producers</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Cinemas" asp-action="Index">Cinemas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Movies" asp-action="Index">Movies</a></li>
+                            </ul>
                         </li>
                     </ul>
+
+                    <form class="form-check-inline my-2 my-lg-0" asp-controller="Movies" asp-action="Filter" method="post" style="padding-right: 25px">
+                        <input type="text" class="form-control" name="searchString" value="" />
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> <i class="bi bi-search"></i> </button>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -38,7 +53,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - eTickets.V8 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - eTickets.V8
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
