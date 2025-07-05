@@ -31,11 +31,6 @@ namespace eTickets.V8.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FullName,ProfilePictureURL,Bio")] Actor actor)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(actor); // kembali ke halaman Create jika model invalid
-            //}
-
             await _service.AddAsync(actor);
             return RedirectToAction(nameof(Index));
         }
@@ -75,6 +70,7 @@ namespace eTickets.V8.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //written down here just for infomartion of ID, i use that for know the Id in parameter.
             Console.WriteLine($"ID yang akan dihapus: {id}");
             Debugger.Break();
             await _service.DeleteAsync(id);

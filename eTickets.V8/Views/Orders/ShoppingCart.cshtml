@@ -1,0 +1,43 @@
+@using eTickets.V8.Data.ViewModels
+@model eTickets.V8.Data.ViewModels.ShoppingCartVM
+
+<h2 class="text-center mt-4 mb-4">You shopping cart summary</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th><b>Selected amount</b></th>
+            <th><b>Movie</b></th>
+            <th><b>Price</b></th>
+            <th><b>Subtotal</b></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+        {
+            <tr>
+                <td>@item.Amount</td>
+                <td>@item.Movie.Name</td>
+                <td>@item.Movie.Price.ToString("C")</td>
+                <td>@(item.Movie.Price* item.Amount).ToString("C")</td>
+                <td>
+                    <a asp-controller="Orders" asp-action="RemoveFromCart" asp-route-id="@item.Movie.Id" class="text-danger"
+                        title="Remove one"><i class="fa fa-shopping-cart"></i></a>
+                    <a asp-controller="Orders" asp-action="AddToCart" asp-route-id="@item.Movie.Id"
+                        class="text-success ml-2" title="Add one"><i class="fa fa-shopping-cart"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-end">
+    <h4><b>Total:</b> @Model.ShoppingCartTotal.ToString("C")</h4>
+</div>
+
+<div class="d-flex justify-content-center mt-3">
+    <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-success">Add more items</a>
+</div>
+
+<!-- Pastikan FontAwesome sudah tersedia untuk icon -->

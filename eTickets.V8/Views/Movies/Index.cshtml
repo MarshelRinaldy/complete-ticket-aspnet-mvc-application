@@ -5,6 +5,14 @@
     ViewData["Title"] = "List of Movie";
 }
 
+<form asp-controller="Movies" asp-action="Filter" method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="searchString" class="form-control" placeholder="Search movies by name..."
+            value="@Context.Request.Query["searchString"]" />
+        <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+
 <style>
     .movie-card {
         min-height: 100%;
@@ -12,6 +20,7 @@
         flex-direction: column;
         justify-content: space-between;
     }
+
     .movie-poster {
         height: 350px;
         object-fit: cover;
@@ -36,27 +45,38 @@
                         <li><strong>End Date:</strong> @movie.EndDate.ToString("dd MMM yy")</li>
                         <li>
                             <strong>Status:</strong>
-                                @if(DateTime.Now >= movie.StartDate && DateTime.Now <= movie.EndDate)
-                                {
-                                    <span class="badge bg-primary">Available</span>
-                                }
-                                else if(DateTime.Now > movie.EndDate)
-                                {
-                                    <span class="badge bg-danger">Expired</span>
-                                }else{
-                                    <span class="badge bg-warning">Upcoming</span>
-                                }
-                            
+                            @if (DateTime.Now >= movie.StartDate && DateTime.Now <= movie.EndDate)
+                            {
+                                <span class="badge bg-primary">Available</span>
+                            }
+                            else if (DateTime.Now > movie.EndDate)
+                            {
+                                <span class="badge bg-danger">Expired</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning">Upcoming</span>
+                            }
                         </li>
                     </ul>
                 </div>
                 <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
-                    <button class="btn btn-success">Add to Cart (Price @movie.Price.ToString("c"))</button>
-                    <a href="#" class="btn btn-outline-info">Show Details</a>
+
+                    <a class="btn btn-outline-success" asp-controller="Orders" asp-action="AddToCart"
+                        asp-route-id="@movie.Id">
+                        <i class="bi bi-cart-plus"></i> Add to Cart (Price @movie.Price.ToString("c"))
+                    </a>
+
+                    <a class="btn btn-outline-primary" asp-controller="Movies" asp-action="Edit" asp-route-id="@movie.Id"
+                        title="Edit">
+                        <i class="bi bi-pencil-square">Edit</i>
+                    </a>
+                    <a class="btn btn-outline-info" asp-controller="Movies" asp-action="Detail"
+                        asp-route-id="@movie.Id">Show Details</a>
                 </div>
             </div>
         </div>
     }
 </div>
 
-
+@await Html.PartialAsync("_CreateItem", "Movies")
