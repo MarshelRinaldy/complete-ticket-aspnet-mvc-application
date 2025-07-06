@@ -9,11 +9,13 @@ namespace eTickets.V8.Controllers
     {
         private readonly IMoviesService _moviesService;
         private readonly ShoppingCart _shoppingCart;
+        private readonly IOrdersService _ordersService;
 
-        public OrdersController(IMoviesService moviesService, ShoppingCart shoppingCart)
+        public OrdersController(IMoviesService moviesService, ShoppingCart shoppingCart, IOrdersService ordersService)
         {
             _moviesService = moviesService;
             _shoppingCart = shoppingCart;
+            _ordersService = ordersService;
         }
         public IActionResult ShoppingCart()
         {
@@ -31,7 +33,7 @@ namespace eTickets.V8.Controllers
 
 
         //menggunakan RedirectToActionResult, jika sudah tau bahwa return pasti hanya menggunakan RedirectToActionResult, gabakal diubah untuk kedepannya
-        public async Task<RedirectToActionResult> AddToShoppingCart(int id)
+        public async Task<IActionResult> AddToShoppingCart(int id)
         {
             var item = await _moviesService.GetMovieByIdAsync(id);
 
@@ -41,5 +43,40 @@ namespace eTickets.V8.Controllers
 
             return RedirectToAction(nameof(ShoppingCart));
         }
+
+        public async Task<IActionResult> RemoveItemToShoppingCart(int id)
+        {
+            var item = await _moviesService.GetMovieByIdAsync(id);
+
+            if (item != null)
+            {
+                _shoppingCart.RemoveItemFromCart(item);
+            }
+
+            return RedirectToAction(nameof(ShoppingCart));
+        }
+
+        public async Task<IActionResult> CompleteOrder()
+        {
+
+            var items = _shoppingCart.GetShoppingCartItems();
+            //userId dan userEmailAddress belum ada dibuat untuk user
+            string userId = "";
+            string userEmailAddress = "";
+            await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
+            await _shoppingCart.ClearShoppingCartAsync();
+            return View("OrderCompleted");
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            string userId = "";
+            var orders = await _ordersService.GetOrdersByUserIdAsync(userId);
+            return View(orders);
+        }
+
+
+
+
     }
 }

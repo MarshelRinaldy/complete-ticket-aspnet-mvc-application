@@ -42,7 +42,7 @@ namespace eTickets.V8.Data.Cart
                 {
                     ShoppingCartId = ShoppingCartId,
                     Movie = movie,
-                    Amount = 0,
+                    Amount = 1,
                 };
 
                 _context.ShoppingCartItems.Add(shoppingCartItem);
@@ -86,5 +86,17 @@ namespace eTickets.V8.Data.Cart
 
             return new ShoppingCart(context) { ShoppingCartId = cartId };
         }
+
+
+        //Shopping Cart nya belum kehapus
+        public async Task ClearShoppingCartAsync()
+        {
+            var items = await _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToListAsync();
+
+            _context.ShoppingCartItems.RemoveRange(items);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
+
