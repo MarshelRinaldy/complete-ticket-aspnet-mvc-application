@@ -105,8 +105,8 @@ namespace eTickets.V8.Data
                             Description = "This is the Life movie description",
                             Price = 39.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-3.jpeg",
-                            StartDate = DateTime.Now.AddDays(-10),
-                            EndDate = DateTime.Now.AddDays(10),
+                            StartDate = DateTime.Now.AddDays(-10).ToUniversalTime(),
+                            EndDate = DateTime.Now.AddDays(10).ToUniversalTime(),
                             CinemaId = 1,
                             ProducerId = 1,
                             MovieCategory = MovieCategory.Documentary
@@ -117,8 +117,8 @@ namespace eTickets.V8.Data
                             Description = "This is the Shawshank Redemption description",
                             Price = 29.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-1.jpeg",
-                            StartDate = DateTime.Now,
-                            EndDate = DateTime.Now.AddDays(3),
+                            StartDate = DateTime.Now.ToUniversalTime(),
+                            EndDate = DateTime.Now.AddDays(3).ToUniversalTime(),
                             CinemaId = 2,
                             ProducerId = 2,
                             MovieCategory = MovieCategory.Action
@@ -129,14 +129,14 @@ namespace eTickets.V8.Data
                             Description = "This is the Ghost movie description",
                             Price = 39.50,
                             ImageURL = "http://dotnethow.net/images/movies/movie-4.jpeg",
-                            StartDate = DateTime.Now.AddDays(-5),
-                            EndDate = DateTime.Now.AddDays(5),
+                            StartDate = DateTime.Now.AddDays(-5).ToUniversalTime(),
+                            EndDate = DateTime.Now.AddDays(5).ToUniversalTime(),
                             CinemaId = 3,
                             ProducerId = 3,
                             MovieCategory = MovieCategory.Horror
                         }
                     });
-                    context.SaveChanges();
+                    //context.SaveChanges();
                 }
 
                 //Actors_Movies
@@ -175,7 +175,7 @@ namespace eTickets.V8.Data
                             MovieId = 3
                         }
                     });
-                    context.SaveChanges();
+                    //context.SaveChanges();
                 }
             }
         }

@@ -37,7 +37,8 @@ namespace eTickets.V8.Controllers
         {
             var item = await _moviesService.GetMovieByIdAsync(id);
 
-            if (item != null) { 
+            if (item != null)
+            {
                 _shoppingCart.AddItemToCart(item);
             }
 
@@ -56,16 +57,22 @@ namespace eTickets.V8.Controllers
             return RedirectToAction(nameof(ShoppingCart));
         }
 
+
+        [HttpPost]
         public async Task<IActionResult> CompleteOrder()
         {
-
             var items = _shoppingCart.GetShoppingCartItems();
-            //userId dan userEmailAddress belum ada dibuat untuk user
             string userId = "";
             string userEmailAddress = "";
             await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
             await _shoppingCart.ClearShoppingCartAsync();
-            return View("OrderCompleted");
+            return RedirectToAction(nameof(OrderSuccess));
+        }
+
+        [HttpGet]
+        public IActionResult OrderSuccess()
+        {
+            return View("~/Views/Orders/CompleteOrder.cshtml");
         }
 
         public async Task<IActionResult> Index()

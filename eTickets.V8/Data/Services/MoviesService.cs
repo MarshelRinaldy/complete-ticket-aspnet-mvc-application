@@ -21,7 +21,7 @@ namespace eTickets.V8.Data.Services
         }
         public async Task AddNewMovieAsync(NewMovieVM movieVM)
         {
-            
+
             var newMovie = new Movie()
             {
                 Name = movieVM.Name,
@@ -29,8 +29,8 @@ namespace eTickets.V8.Data.Services
                 Price = movieVM.Price,
                 ImageURL = movieVM.ImageURL,
                 CinemaId = movieVM.CinemaId,
-                StartDate = movieVM.StartDate,
-                EndDate = movieVM.EndDate,
+                StartDate = DateTime.SpecifyKind(movieVM.StartDate, DateTimeKind.Utc),
+                EndDate = DateTime.SpecifyKind(movieVM.EndDate, DateTimeKind.Utc),
                 MovieCategory = movieVM.MovieCategory,
                 ProducerId = movieVM.ProducerId,
             };
@@ -38,7 +38,7 @@ namespace eTickets.V8.Data.Services
             await _context.Movies.AddAsync(newMovie);
             await _context.SaveChangesAsync();
 
-            
+
 
             // Add Movie Actors
             if (movieVM.ActorIds != null)
@@ -54,7 +54,6 @@ namespace eTickets.V8.Data.Services
                 }
             }
 
-           
 
             await _context.SaveChangesAsync();
         }
@@ -86,7 +85,7 @@ namespace eTickets.V8.Data.Services
         public async Task UpdateMovieAsync(NewMovieVM movieVM)
         {
 
-            var dbMovie = await _context.Movies.FirstOrDefaultAsync( n => n.Id == movieVM.Id);
+            var dbMovie = await _context.Movies.FirstOrDefaultAsync(n => n.Id == movieVM.Id);
 
 
             dbMovie.Name = movieVM.Name;
@@ -94,8 +93,8 @@ namespace eTickets.V8.Data.Services
             dbMovie.Price = movieVM.Price;
             dbMovie.ImageURL = movieVM.ImageURL;
             dbMovie.CinemaId = movieVM.CinemaId;
-            dbMovie.StartDate = movieVM.StartDate;
-            dbMovie.EndDate = movieVM.EndDate;
+            dbMovie.StartDate = DateTime.SpecifyKind(movieVM.StartDate, DateTimeKind.Utc);
+            dbMovie.EndDate = DateTime.SpecifyKind(movieVM.EndDate, DateTimeKind.Utc);
             dbMovie.MovieCategory = movieVM.MovieCategory;
             dbMovie.ProducerId = movieVM.ProducerId;
             await _context.SaveChangesAsync();

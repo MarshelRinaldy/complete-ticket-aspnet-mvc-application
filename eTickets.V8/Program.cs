@@ -11,8 +11,10 @@ builder.Services.AddSession();
 builder.Services.AddControllersWithViews();
 
 // Add DbContext configuration
+
+//untuk menggunakan UseNpgsql ada package yang harus di installed terlebih dahulu
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase")));
 
 builder.Services.AddScoped<IActorsService, ActorsService>();
 builder.Services.AddScoped<IProducersService, ProducersService>();

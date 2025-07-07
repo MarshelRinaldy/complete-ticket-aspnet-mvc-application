@@ -1,5 +1,6 @@
 ﻿using eTickets.V8.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace eTickets.V8.Data
 {

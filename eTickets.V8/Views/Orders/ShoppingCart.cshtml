@@ -67,10 +67,19 @@
             },
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (details) {
-                    alert('Transaction completed by);
-                        });
+                    // Kirim POST ke server untuk proses order
+                    fetch('@Url.Action("CompleteOrder", "Orders")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    }).then(function (response) {
+                        if (response.ok) {
+                            window.location.href = '@Url.Action("OrderSuccess", "Orders")';
+                        }
+                    });
+                });
             }
         }).render('#paypal-btn');
     </script>
-}
 }
