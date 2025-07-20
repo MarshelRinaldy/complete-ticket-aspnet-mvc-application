@@ -18,7 +18,6 @@ namespace eTickets.V8.Controllers
         }
 
 
-
         // public async Task<IActionResult> Index()
         // {
         //     var allProducer = await _context.Producers.ToListAsync();

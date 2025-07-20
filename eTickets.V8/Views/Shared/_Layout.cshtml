@@ -60,9 +60,12 @@
                                         asp-action="YourAction">Custom Link</a>
                                 </li> *@
                             </ul>
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Register">Sign Up</a>
                         </li>
                         @await Component.InvokeAsync("ShoppingCartSummary")
                     </ul>
+
                 </div>
             </div>
         </nav>

@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using eTickets.V8.Data;
 using eTickets.V8.Data.Services;
 using eTickets.V8.Data.Cart;
+using eTickets.V8.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,17 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 //dibawah ini untuk memanggil fungsi yang ada di Data/Cart/ShoppingCart
 builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 
+
+//Authentication and Authorization
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddMemoryCache();
+builder.Services.AddAuthentication(
+    options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    }
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,13 +49,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 app.UseSession();
+
+
+//Authentication & Authorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAuthorization();
 
@@ -51,5 +68,6 @@ app.MapControllerRoute(
 
 // Seed Database
 AppDbInitializer.Seed(app);
+AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
 
 app.Run();

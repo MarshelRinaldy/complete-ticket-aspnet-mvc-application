@@ -1,5 +1,8 @@
 ﻿using eTickets.V8.Data.Enums;
+using eTickets.V8.Data.Static;
 using eTickets.V8.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 
 namespace eTickets.V8.Data
 {
@@ -177,6 +180,64 @@ namespace eTickets.V8.Data
                     });
                     //context.SaveChanges();
                 }
+            }
+        }
+
+        public static async Task SeedUsersAndRolesAsync(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+
+                //Roles Section
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                }
+
+                if (!await roleManager.RoleExistsAsync(UserRoles.User))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+                }
+
+                //Users
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                //Role Admin
+                var adminUser = await userManager.FindByEmailAsync("admin@etickets.com");
+                if (adminUser == null)
+                {
+                    var newAdminUser = new ApplicationUser()
+                    {
+                        FullName = "Admin User",
+                        UserName = "admin-user",
+                        Email = "admin@etickets.com",
+                        EmailConfirmed = true,
+                    };
+
+                    await userManager.CreateAsync(newAdminUser, "Coding@1234?");
+                    await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+                    // await userManager.AddToRoleAsync(newAdminUser, "Admin"); -> gini juga bisa kalau ga pake file static
+                }
+
+                //Role Users
+                adminUser = await userManager.FindByEmailAsync("user@etickets.com");
+                if (adminUser == null)
+                {
+                    var newAdminUser = new ApplicationUser()
+                    {
+                        FullName = "Application User",
+                        UserName = "app-user",
+                        Email = "user@etickets.com",
+                        EmailConfirmed = true,
+                    };
+
+                    await userManager.CreateAsync(newAdminUser, "Coding@1234?");
+                    await userManager.AddToRoleAsync(newAdminUser, UserRoles.User);
+                    // await userManager.AddToRoleAsync(newAdminUser, "Admin"); -> gini juga bisa kalau ga pake file static
+                }
+
             }
         }
     }

@@ -1,10 +1,11 @@
 ﻿using eTickets.V8.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace eTickets.V8.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -40,6 +41,9 @@ namespace eTickets.V8.Data
 
         //Cart
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+
+        //User
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
     }
 }

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using eTickets.V8.Data.Services;
 using System.Diagnostics;
+using eTickets.V8.Data.Dto;
+using eTickets.V8.Data.ViewModels;
 
 namespace eTickets.V8.Controllers
 {
@@ -27,10 +29,24 @@ namespace eTickets.V8.Controllers
         }
 
         // POST: Actors/Create
+        //Ini pengkodean yang baik menggunakan DTO
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FullName,ProfilePictureURL,Bio")] Actor actor)
+        public async Task<IActionResult> Create(ActorVM actorVM)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return View(actorVM);
+            }
+
+            var actor = new ActorDTO
+            {
+                FullName = actorVM.FullName,
+                ProfilePictureURL = actorVM.ProfilePictureURL,
+                Bio = actorVM.Bio
+            };
+
             await _service.AddAsync(actor);
             return RedirectToAction(nameof(Index));
         }
